@@ -1,2 +1,2 @@
 docdir = $(datadir)/doc/@PACKAGE@
-doc_DATA =
+doc_DATA = README LICENSE
