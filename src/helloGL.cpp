@@ -35,8 +35,9 @@
 #  endif
 #endif
 
-
-#include <GL/freeglut.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
 
 /* Handler for window-repaint event.
  * Call back when the window first appears
