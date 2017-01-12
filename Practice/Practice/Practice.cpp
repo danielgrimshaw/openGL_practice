@@ -25,10 +25,11 @@
 #define GLEW_STATIC
 #endif
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include <GLFW/glfw3.h>
 
 // Standard Libraries
 #include <iostream>
+#include <cstdbool>
 
 // Header Files
 #include "util.h"
@@ -38,18 +39,13 @@
 // Functions
 
 // Handlers
-void draw_handler(void); // Redraw handler
-void idle_handler(void); // Idle handler
-void resize_handler(int width, int height); // Resize Handler
-void key_handler(unsigned char key, int x, int y); // Keyboard driver
-void button_handler(int bn, int state, int x, int y); // Mouse button handler
-void mouse_handler(int x, int y); // Mouse motion handler
-void mouse_idle_handler(int x, int y); // Passive mouse motion handler
+void key_handler(GLFWwindow * window, int key, int scancode, int action, int mode); // Keyboard driver
+void button_handler(GLFWwindow * window, int button, int action, int mods); // Mouse button handler
+void mouse_handler(GLFWwindow * window, double x, double y); // Mouse motion handler
 
 // Filenames
 std::string vertex_name = "vert.glsl";
 std::string fragment_name = "frag.glsl";
-
 
 // FPS Counter
 double lastTime = 0;
@@ -68,23 +64,16 @@ GLuint VBO, VAO, EBO;
 // Uniforms
 
 // Others
-BOOL neg = false;
+GLboolean neg = false;
 
-// Controls list
-const char * controls = "Controls:\r\n"
-"\'c\', \'h\', or \'?\': Print these controls\r\n"
-"\'m\': Go to mandelbrot mode\r\n"
-"\'j\': Go to jula mode\r\n"
-"\'+\': Increase iterations\r\n"
-"\'-\': Decrease iterations\r\n"
-"\r\n"
-"Mandelbrot additional controls:\r\n"
-"\tClick and drag: Zoom in and out\r\n"
-"\tMouse scroll: Zoom in and out\r\n"
-"\r\n"
-"Julia additional controls:\r\n"
-"\tMouse click or drag: Change C value (shape)\r\n"
-"\tSpace bar: Toggle interactive mode\r\n";
+// Controls
+const char * controls = "\t\t\tShader Practice\r\n"
+"Move the mouse to change the speed of the lines.\r\n"
+"Further left increases density, right decreases density\r\n"
+"down increases speed, and up decreases speed.\r\n"
+"Click any mouse button to switch the direction of motion\r\n"
+"Press the \'c\' key to show the cursor while over the window\r\n"
+"and the \'h\' key to rehide it. Press \'q\' or ESC to exit.\r\n\0";
 
 int main(int argc, char ** argv) {
 	using namespace std;
@@ -100,27 +89,32 @@ int main(int argc, char ** argv) {
 		0, 1, 3,
 		1, 2, 3
 	};
-
-	// Print controls
+	
+	// Display controls
 	cout << controls << endl;
 
-	// initialize glut
+	// Initialize GLFW
+
+	glfwInit();
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	
-	glutInit(&argc, argv);
-	glutInitWindowSize(800, 600);
+	GLFWwindow * window = glfwCreateWindow(800, 600, "Practice", nullptr, nullptr);
+	if (window == nullptr) {
+		std::cout << "Unable to create GLFW window\naborting ..." << std::endl;
+		glfwTerminate();
+		return -1;
+	}
+	glfwMakeContextCurrent(window);
 
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
-	glutCreateWindow("Fractals");
-
-	glutDisplayFunc(draw_handler);
-	glutIdleFunc(idle_handler);
-	glutReshapeFunc(resize_handler);
-	glutKeyboardFunc(key_handler);
-	glutMouseFunc(button_handler);
-	glutMotionFunc(mouse_handler);
-	glutPassiveMotionFunc(mouse_idle_handler);
+	glfwSetKeyCallback(window, key_handler);
+	glfwSetMouseButtonCallback(window, button_handler);
+	glfwSetCursorPosCallback(window, mouse_handler);
 	
 	// Load all library function pointers
+
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK) { // Doesn't run without GLEW
         std::cout << "Failed to initialize GLEW" << std::endl;
@@ -154,76 +148,71 @@ int main(int argc, char ** argv) {
 	shaders.create();
 
 	glUseProgram(shaders.getId());
-	
-	glViewport(0,0,800,600); // Tell GPU where to draw to and window size
 
-	lastTime = glutGet(GLUT_ELAPSED_TIME);
+	int width, height;
+	glfwGetFramebufferSize(window, &width, &height);
+	
+	glViewport(0,0,width,height); // Tell GPU where to draw to and window size
+
+	lastTime = glfwGetTime();
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	glfwSwapInterval(0);
 
 	GLint uniform_loc;
 
 	uniform_loc = glGetUniformLocation(shaders.getId(), "u_time");
-	glUniform1f(uniform_loc, (float)glutGet(GLUT_ELAPSED_TIME) / 1000.0f);
+	glUniform1f(uniform_loc, (float)glfwGetTime());
 
 	uniform_loc = glGetUniformLocation(shaders.getId(), "u_resolution");
-	glUniform2f(uniform_loc, (float)glutGet(GLUT_WINDOW_WIDTH), (float)glutGet(GLUT_WINDOW_HEIGHT));
+	glUniform2f(uniform_loc, (float)width, (float)height);
 
 	uniform_loc = glGetUniformLocation(shaders.getId(), "u_mouse");
 	glUniform2f(uniform_loc, 0.0f, 0.0f);
 
-	glutMainLoop(); // Enter callback loop
+	while (!glfwWindowShouldClose(window)) { // Callback loop
+		glfwPollEvents();
+
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		glUseProgram(shaders.getId());
+
+		uniform_loc = glGetUniformLocation(shaders.getId(), "u_time");
+		glUniform1f(uniform_loc, (float)glfwGetTime());
+
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+
+		glfwSwapBuffers(window);
+
+		double currentTime = glfwGetTime();
+		double deltaT = currentTime - lastTime;
+		nbFrames++;
+		if (deltaT >= 1){
+			cout << 1.0 / (double)nbFrames << " ms/frame (" << nbFrames << " fps)" << endl;
+			nbFrames = 0;
+			lastTime = currentTime;
+		}
+	}
+
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
+
+	glfwTerminate();
 	return 0;
 }
 
-void draw_handler(void) {
-	using namespace std;
-	GLint uniform_loc;
-
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	glUseProgram(shaders.getId());
-
-	uniform_loc = glGetUniformLocation(shaders.getId(), "u_time");
-	glUniform1f(uniform_loc, (float)glutGet(GLUT_ELAPSED_TIME)/1000.0f);
-
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
-
-	glutSwapBuffers();
-	
-	double currentTime = glutGet(GLUT_ELAPSED_TIME);
-	double deltaT = currentTime - lastTime;
-	nbFrames++;
-	if (deltaT >= 1000){
-		cout << 1000.0/(double)nbFrames << " ms/frame (" << nbFrames << " fps)" << endl;
-		nbFrames = 0;
-		lastTime = currentTime;
-	}
-}
-
-void idle_handler(void) {
-	glutPostRedisplay();
-}
-
-void resize_handler(int width, int height) {
-	GLint uniform_loc;
-
-	uniform_loc = glGetUniformLocation(shaders.getId(), "u_resolution");
-	glUniform2f(uniform_loc, (float)glutGet(GLUT_WINDOW_WIDTH), (float)glutGet(GLUT_WINDOW_HEIGHT));
-
-	glutPostRedisplay();
-}
-
-void key_handler(unsigned char key, int x, int y) {
+void key_handler(GLFWwindow * window, int key, int scancode, int action, int mode) {
 	using namespace std;
 	GLfloat speed = 0.1f;
 
 	switch (key) { // Keyboard
-	case 27: // ESC
+	case GLFW_KEY_ESCAPE: // ESC
 	case 'q':
 	case 'Q': // Quit
-		exit(0);
+		glfwSetWindowShouldClose(window, GL_TRUE);
 		break;
 	case 'w':
 	case 'W':
@@ -237,37 +226,36 @@ void key_handler(unsigned char key, int x, int y) {
 	case 'd':
 	case 'D':
 		break;
+	case 'c':
+	case 'C':
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		break;
+	case 'h':
+	case 'H':
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+		break;
 	default: // No key was pressed that is of importance
 		break;
 	}
-
-	glutPostRedisplay();
 }
 
-void button_handler(int bn, int state, int x, int y) {
-	//GLfloat inSpeed = 0.99f;
-	//GLfloat outSpeed = 1.01f;
-	GLfloat speed = 0.05f;
-	switch (bn) {
-	case GLUT_LEFT_BUTTON:
-		neg = !neg;
-		break;
-	case GLUT_RIGHT_BUTTON:
-		neg = !neg;
-		break;
-	case GLUT_MIDDLE_BUTTON:
-		neg = !neg;
-		break;
-	case 3: // Scroll up
-		break;
-	case 4: // Scroll down
-		break;
+void button_handler(GLFWwindow * window, int button, int action, int mods) {
+	if (action == GLFW_PRESS) {
+		switch (button) {
+		case GLFW_MOUSE_BUTTON_LEFT:
+			neg = !neg;
+			break;
+		case GLFW_MOUSE_BUTTON_RIGHT:
+			neg = !neg;
+			break;
+		case GLFW_MOUSE_BUTTON_MIDDLE:
+			neg = !neg;
+			break;
+		}
 	}
-
-	glutPostRedisplay();
 }
 
-void mouse_handler(int x, int y) {
+void mouse_handler(GLFWwindow * window, double x, double y) {
 	GLint uniform_loc;
 
 	uniform_loc = glGetUniformLocation(shaders.getId(), "u_mouse");
@@ -277,20 +265,4 @@ void mouse_handler(int x, int y) {
 	else {
 		glUniform2f(uniform_loc, (float)x, (float)-y);
 	}
-
-	glutPostRedisplay();
-}
-
-void mouse_idle_handler(int x, int y) {
-	GLint uniform_loc;
-
-	uniform_loc = glGetUniformLocation(shaders.getId(), "u_mouse");
-	if (neg) {
-		glUniform2f(uniform_loc, (float)x, (float)y);
-	}
-	else {
-		glUniform2f(uniform_loc, (float)x, (float)-y);
-	}
-
-	glutPostRedisplay();
 }

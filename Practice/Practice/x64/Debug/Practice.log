@@ -1,10 +1,10 @@
-﻿Build started 1/11/2017 5:59:30 PM.
+﻿Build started 1/11/2017 8:14:23 PM.
      1>Project "D:\Programming\Github\Graphics\openGL_practice\Practice\Practice\Practice.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /Od /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt Practice.cpp
          Practice.cpp
        Link:
-         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Programming\Github\Graphics\openGL_practice\Practice\x64\Debug\Practice.exe" /INCREMENTAL /NOLOGO /LIBPATH:D:\Programming\Github\Graphics\openGL_practice\Practice\Dependencies\OpenGL\lib opengl32.lib glew32s.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Programming\Github\Graphics\openGL_practice\Practice\x64\Debug\Practice.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Programming\Github\Graphics\openGL_practice\Practice\x64\Debug\Practice.lib" /MACHINE:X64 x64\Debug\Practice.obj
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Programming\Github\Graphics\openGL_practice\Practice\x64\Debug\Practice.exe" /INCREMENTAL /NOLOGO /LIBPATH:D:\Programming\Github\Graphics\openGL_practice\Practice\Dependencies\OpenGL\lib opengl32.lib glew32s.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Programming\Github\Graphics\openGL_practice\Practice\x64\Debug\Practice.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Programming\Github\Graphics\openGL_practice\Practice\x64\Debug\Practice.lib" /MACHINE:X64 x64\Debug\Practice.obj
          x64\Debug\Program.obj
          x64\Debug\Shader.obj
          x64\Debug\util.obj
@@ -13,4 +13,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.87
+Time Elapsed 00:00:00.71
