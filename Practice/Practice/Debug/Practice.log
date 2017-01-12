@@ -1,0 +1,71 @@
+﻿Build started 1/11/2017 4:17:30 PM.
+     1>Project "D:\Programming\Github\Graphics\openGL_practice\Practice\Practice\Practice.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Practice.cpp Program.cpp Shader.cpp util.cpp
+         util.cpp
+         Shader.cpp
+         Program.cpp
+         Practice.cpp
+     1>d:\programming\github\graphics\opengl_practice\practice\practice\practice.cpp(168): warning C4101: 'uniform_loc' : unreferenced local variable
+         Generating Code...
+       Link:
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Programming\Github\Graphics\openGL_practice\Practice\Debug\Practice.exe" /INCREMENTAL /NOLOGO /LIBPATH:D:\Programming\Github\Graphics\openGL_practice\Practice\Dependencies\OpenGL\lib opengl32.lib glew32s.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Programming\Github\Graphics\openGL_practice\Practice\Debug\Practice.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Programming\Github\Graphics\openGL_practice\Practice\Debug\Practice.lib" /MACHINE:X86 Debug\Practice.obj
+         Debug\Program.obj
+         Debug\Shader.obj
+         Debug\util.obj
+     1>Practice.obj : error LNK2019: unresolved external symbol _glewInit@0 referenced in function _main
+     1>Practice.obj : error LNK2019: unresolved external symbol __imp__glutInitWindowSize@8 referenced in function _main
+     1>Practice.obj : error LNK2019: unresolved external symbol __imp__glutInitDisplayMode@4 referenced in function _main
+     1>Practice.obj : error LNK2019: unresolved external symbol __imp__glutMainLoop@0 referenced in function _main
+     1>Practice.obj : error LNK2019: unresolved external symbol __imp__glutPostRedisplay@0 referenced in function "void __cdecl button_handler(int,int,int,int)" (?button_handler@@YAXHHHH@Z)
+     1>Practice.obj : error LNK2019: unresolved external symbol __imp__glutSwapBuffers@0 referenced in function "void __cdecl draw_handler(void)" (?draw_handler@@YAXXZ)
+     1>Practice.obj : error LNK2019: unresolved external symbol __imp__glutIdleFunc@4 referenced in function _main
+     1>Practice.obj : error LNK2019: unresolved external symbol __imp__glutKeyboardFunc@4 referenced in function _main
+     1>Practice.obj : error LNK2019: unresolved external symbol __imp__glutReshapeFunc@4 referenced in function _main
+     1>Practice.obj : error LNK2019: unresolved external symbol __imp__glutDisplayFunc@4 referenced in function _main
+     1>Practice.obj : error LNK2019: unresolved external symbol __imp__glutMouseFunc@4 referenced in function _main
+     1>Practice.obj : error LNK2019: unresolved external symbol __imp__glutMotionFunc@4 referenced in function _main
+     1>Practice.obj : error LNK2019: unresolved external symbol __imp__glutPassiveMotionFunc@4 referenced in function _main
+     1>Practice.obj : error LNK2019: unresolved external symbol __imp__glutGet@4 referenced in function "void __cdecl draw_handler(void)" (?draw_handler@@YAXXZ)
+     1>Practice.obj : error LNK2019: unresolved external symbol __imp____glutInitWithExit@12 referenced in function _glutInit_ATEXIT_HACK@8
+     1>Practice.obj : error LNK2019: unresolved external symbol __imp____glutCreateWindowWithExit@8 referenced in function _glutCreateWindow_ATEXIT_HACK@4
+     1>Practice.obj : error LNK2001: unresolved external symbol ___glewBindBuffer
+     1>Practice.obj : error LNK2001: unresolved external symbol ___glewBufferData
+     1>Practice.obj : error LNK2001: unresolved external symbol ___glewGenBuffers
+     1>Practice.obj : error LNK2001: unresolved external symbol ___glewEnableVertexAttribArray
+     1>Practice.obj : error LNK2001: unresolved external symbol ___glewUseProgram
+     1>util.obj : error LNK2001: unresolved external symbol ___glewUseProgram
+     1>Practice.obj : error LNK2001: unresolved external symbol ___glewVertexAttribPointer
+     1>Practice.obj : error LNK2001: unresolved external symbol ___glewBindVertexArray
+     1>Practice.obj : error LNK2001: unresolved external symbol ___glewGenVertexArrays
+     1>Practice.obj : error LNK2001: unresolved external symbol _glewExperimental
+     1>Program.obj : error LNK2001: unresolved external symbol __imp____glewAttachShader
+     1>Program.obj : error LNK2001: unresolved external symbol __imp____glewCreateProgram
+     1>Program.obj : error LNK2001: unresolved external symbol __imp____glewGetProgramInfoLog
+     1>Program.obj : error LNK2001: unresolved external symbol __imp____glewGetProgramiv
+     1>Program.obj : error LNK2001: unresolved external symbol __imp____glewLinkProgram
+     1>Shader.obj : error LNK2001: unresolved external symbol __imp____glewCompileShader
+     1>Shader.obj : error LNK2001: unresolved external symbol __imp____glewCreateShader
+     1>Shader.obj : error LNK2001: unresolved external symbol __imp____glewGetShaderInfoLog
+     1>Shader.obj : error LNK2001: unresolved external symbol __imp____glewGetShaderiv
+     1>Shader.obj : error LNK2001: unresolved external symbol __imp____glewShaderSource
+     1>util.obj : error LNK2001: unresolved external symbol ___glewAttachShader
+     1>util.obj : error LNK2001: unresolved external symbol ___glewCompileShader
+     1>util.obj : error LNK2001: unresolved external symbol ___glewCreateProgram
+     1>util.obj : error LNK2001: unresolved external symbol ___glewCreateShader
+     1>util.obj : error LNK2001: unresolved external symbol ___glewGetProgramInfoLog
+     1>util.obj : error LNK2001: unresolved external symbol ___glewGetProgramiv
+     1>util.obj : error LNK2001: unresolved external symbol ___glewGetShaderInfoLog
+     1>util.obj : error LNK2001: unresolved external symbol ___glewGetShaderiv
+     1>util.obj : error LNK2001: unresolved external symbol ___glewGetUniformLocation
+     1>util.obj : error LNK2001: unresolved external symbol ___glewLinkProgram
+     1>util.obj : error LNK2001: unresolved external symbol ___glewShaderSource
+     1>util.obj : error LNK2001: unresolved external symbol ___glewUniform1f
+     1>util.obj : error LNK2001: unresolved external symbol ___glewUniform1i
+     1>util.obj : error LNK2001: unresolved external symbol ___glewUniform2f
+     1>D:\Programming\Github\Graphics\openGL_practice\Practice\Debug\Practice.exe : fatal error LNK1120: 49 unresolved externals
+     1>Done Building Project "D:\Programming\Github\Graphics\openGL_practice\Practice\Practice\Practice.vcxproj" (Rebuild target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:02.03
